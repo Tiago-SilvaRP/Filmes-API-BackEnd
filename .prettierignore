@@ -1,5 +1,4 @@
-node_modules
-dist
+# Ignore artifacts:
 build
 coverage
-.env
+node_modules

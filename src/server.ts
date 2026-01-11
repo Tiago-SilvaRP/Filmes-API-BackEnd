@@ -1,4 +1,1 @@
-const test = "Tiago";
-console.log(test);
-const teste = "tiago";
-console.log(teste);
+const name = "tiago";
