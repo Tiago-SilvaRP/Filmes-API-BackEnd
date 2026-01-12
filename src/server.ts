@@ -7,7 +7,7 @@ app.get("/movies", (req, res) => {
 });
 
 app.use((error, req, res, next) => {
-  console.error(`Erro apresentado: ${error.stack}`);
+  console.error(`Erro apresentado: ${new Date()}, ${error.stack}\n\n`);
   res.status(500).send("Algo deu errado");
 });
 
