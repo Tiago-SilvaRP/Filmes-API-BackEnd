@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-    output = "./generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -17,7 +17,7 @@ model Genre {
 
 model Language {
   id     Int     @id @default(autoincrement())
-  name   String? @db.VarChar(100) @map("idioma")
+  name   String? @map("idioma") @db.VarChar(100)
   movies Movie[]
 
   @@map("languages")

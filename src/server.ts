@@ -1,5 +1,6 @@
 import express from "express";
 import { prisma } from "./lib/prisma/prisma.js";
+import { Prisma } from "@prisma/client";
 
 const port = 3000;
 const app = express();
@@ -8,12 +9,11 @@ app.use(express.json());
 
 app.get("/movies", async (_, res) => {
   const movies = await prisma.movie.findMany({
-    orderBy: {
-      title: "asc",
-    },
-    include: {
-      genres: true,
-      languages: true,
+    where: {
+      title: {
+        equals: "avatar",
+        mode: "insensitive",
+      },
     },
   });
   const languages = await prisma.language.findMany();
@@ -23,10 +23,12 @@ app.get("/movies", async (_, res) => {
 
 app.post("/movies", async (req, res, next) => {
   const { title, genre_id, language_id, oscar_count, release_date } = req.body;
+
   try {
     await prisma.movie.create({
       data: {
         title,
+        title_key: title.toLowerCase().trim(),
         genre_id,
         language_id,
         oscar_count,
@@ -36,7 +38,14 @@ app.post("/movies", async (req, res, next) => {
 
     res.status(201).send("Filme adicionado com sucesso!");
   } catch (error) {
-    next(error);
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return res.status(409).json({
+        message: "Já existe um filme cadastrado com esse título",
+      });
+    }
   }
 });
 
