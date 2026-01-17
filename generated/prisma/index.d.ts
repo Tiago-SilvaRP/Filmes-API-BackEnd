@@ -4792,17 +4792,17 @@ export namespace Prisma {
     title_key?: StringFieldUpdateOperationsInput | string
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     oscar_count?: NullableIntFieldUpdateOperationsInput | number | null
-    genres?: GenreUpdateOneWithoutMoviesNestedInput
-    languages?: LanguageUpdateOneWithoutMoviesNestedInput
+    genres?: GenreUpdateOneWithoutMoviesNestedInput | undefined
+    languages?: LanguageUpdateOneWithoutMoviesNestedInput | undefined
   }
 
   export type MovieUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number | undefined
     title?: NullableStringFieldUpdateOperationsInput | string | null
     title_key?: StringFieldUpdateOperationsInput | string
     release_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    genre_id?: NullableIntFieldUpdateOperationsInput | number | null
-    language_id?: NullableIntFieldUpdateOperationsInput | number | null
+    genre_id?: NullableIntFieldUpdateOperationsInput | number | null | undefined
+    language_id?: NullableIntFieldUpdateOperationsInput | number | null | undefined
     oscar_count?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
