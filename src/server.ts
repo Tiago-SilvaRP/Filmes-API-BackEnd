@@ -14,17 +14,11 @@ const app = express();
 app.use(express.json());
 
 app.get("/movies", async (_, res) => {
-  const movies = await prisma.movie.findMany({
-    select: {
-      title: true,
-      languages: {
-        select: { name: true },
-      },
-    },
-  });
+  const movies = await prisma.movie.findMany({});
   const languages = await prisma.language.findMany();
+  const genres = await prisma.genre.findMany();
 
-  res.json({ movies, languages });
+  res.json({ movies, languages, genres });
 });
 
 app.post("/movies", async (req, res, next) => {
@@ -61,9 +55,7 @@ app.put("/movies/:id", async (req, res, next) => {
   const id = Number(req.params.id);
 
   try {
-    const movie = await prisma.movie.findUnique({
-      where: { id },
-    });
+    const movie = await prisma.movie.findUnique({ where: { id } });
 
     if (!movie)
       return res.status(404).send({ message: "Filme não encontrado" });
@@ -101,6 +93,22 @@ app.put("/movies/:id", async (req, res, next) => {
     res.status(200).send("Atualização feita com sucesso!");
   } catch (error) {
     console.error("Falha ao atualizar filme!");
+    next(error);
+  }
+});
+
+app.delete("/movies/:id", async (req, res, next) => {
+  const id = Number(req.params.id);
+
+  if (Number.isNaN(id)) {
+    return res.status(400).json({ message: "ID inválido!" });
+  }
+
+  try {
+    await prisma.movie.delete({ where: { id } });
+    res.status(204).json({ message: "Filme deletado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao deletar", error);
     next(error);
   }
 });
