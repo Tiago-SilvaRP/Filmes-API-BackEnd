@@ -93,6 +93,44 @@
           }
         }
       }
+    },
+    "/movies/genre/{name}": {
+      "get": {
+        "tags": ["Movie"],
+        "summary": "Filtrar filmes por gênero",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "description": "Nome do gênero",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filmes encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Filme não encontrado"
+          },
+          "500": {
+            "description": "Erro na busca do filme"
+          }
+        }
+      }
     }
   },
   "components": {
