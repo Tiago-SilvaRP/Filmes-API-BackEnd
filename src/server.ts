@@ -110,14 +110,14 @@ app.delete("/movies/:id", async (req, res, next) => {
 
   try {
     await prisma.movie.delete({ where: { id } });
-    res.status(204).json({ message: "Filme deletado com sucesso!" });
+    res.status(204).send();
   } catch (error) {
     console.error("Erro ao deletar", error);
     next(error);
   }
 });
 
-app.get("/movies/genre/:genreName", async (req, res) => {
+app.get("/movies/genre/:genreName", async (req, res, next) => {
   try {
     const moviesFilteredGenreName = await prisma.movie.findMany({
       where: {
@@ -151,6 +151,7 @@ app.get("/movies/genre/:genreName", async (req, res) => {
     res.status(200).send(moviesFilteredGenreName);
   } catch (error) {
     res.status(500).json({ message: "Erro na busca do filme" });
+    next(error);
   }
 });
 
