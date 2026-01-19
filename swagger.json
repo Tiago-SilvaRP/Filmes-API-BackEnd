@@ -26,6 +26,44 @@
           }
         }
       }
+    },
+    "/movies/{id}": {
+      "put": {
+        "tags": ["Update Movies"],
+        "summary": "Atualizar um filme existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do filme a ser atualizado",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Filme alterado com sucesso"
+          },
+          "404": {
+            "description": "Filme não encontrado"
+          },
+          "500": {
+            "description": "Falha ao atualizar o registro do filme"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -70,7 +108,7 @@
           },
           "language_id": {
             "type": "integer",
-            "descritpion": "Idioma do filme"
+            "description": "Idioma do filme"
           },
           "languages": {
             "type": "object",
@@ -88,6 +126,33 @@
           "oscar_count": {
             "type": "integer",
             "description": "Quantidade de oscars ganhos pelo filme"
+          }
+        }
+      },
+      "MovieInput": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Titulo do filme"
+          },
+          "genre_id": {
+            "type": "integer",
+            "description": "Id do gênero do filme"
+          },
+          "language_id": {
+            "type": "integer",
+            "description": "Idioma do filme"
+          },
+          "oscar_count": {
+            "type": "integer",
+            "description": "Quantidade de oscars ganhos pelo filme"
+          },
+          "release_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de lançamento do filme"
           }
         }
       }
