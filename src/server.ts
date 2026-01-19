@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../swagger.json";
+
 import express, {
   type Response,
   type Request,
@@ -10,19 +13,22 @@ import { z, ZodError } from "zod";
 
 const port = 3000;
 const app = express();
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(express.json());
 
 app.get("/movies", async (_, res) => {
   const movies = await prisma.movie.findMany({
     include: {
-      genres: true,
+      genres: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
-  const languages = await prisma.language.findMany();
-  const genres = await prisma.genre.findMany();
 
-  res.json({ movies, languages, genres });
+  res.json({ movies });
 });
 
 app.post("/movies", async (req, res, next) => {
