@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "../swagger.json";
+import swaggerDocument from "../swagger.json" with { type: "json" };
 
 import express, {
   type Response,
