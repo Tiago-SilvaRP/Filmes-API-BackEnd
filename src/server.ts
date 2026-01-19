@@ -14,7 +14,11 @@ const app = express();
 app.use(express.json());
 
 app.get("/movies", async (_, res) => {
-  const movies = await prisma.movie.findMany({});
+  const movies = await prisma.movie.findMany({
+    include: {
+      genres: true,
+    },
+  });
   const languages = await prisma.language.findMany();
   const genres = await prisma.genre.findMany();
 
@@ -110,6 +114,43 @@ app.delete("/movies/:id", async (req, res, next) => {
   } catch (error) {
     console.error("Erro ao deletar", error);
     next(error);
+  }
+});
+
+app.get("/movies/genre/:genreName", async (req, res) => {
+  try {
+    const moviesFilteredGenreName = await prisma.movie.findMany({
+      where: {
+        genres: {
+          is: {
+            name: {
+              equals: req.params.genreName,
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+      include: {
+        genres: {
+          select: {
+            name: true,
+          },
+        },
+        languages: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (moviesFilteredGenreName.length === 0) {
+      return res.status(404).send("Filme não encontrado");
+    }
+
+    res.status(200).send(moviesFilteredGenreName);
+  } catch (error) {
+    res.status(500).json({ message: "Erro na busca do filme" });
   }
 });
 
