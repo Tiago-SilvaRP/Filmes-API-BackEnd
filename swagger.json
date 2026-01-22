@@ -25,6 +25,38 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": ["Movie"],
+        "summary": "Adiciona um filme novo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Filme criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "500": {
+            "description": "Erro ao criar o filme"
+          }
+        }
       }
     },
     "/movies/{id}": {
